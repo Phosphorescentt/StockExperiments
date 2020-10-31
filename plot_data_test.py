@@ -1,12 +1,8 @@
-import json
 import requests
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 import SECRETS
-
-from pprint import pprint
 
 headers = {
     "Content-type": "application/json",
