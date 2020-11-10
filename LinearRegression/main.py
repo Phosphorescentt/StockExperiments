@@ -1,21 +1,23 @@
-import requests
+import numpy as np
+import matplotlib.pyplot as plt
 
-import pandas as pd
+import LinearRegression
 
-import SECRETS
+# Shitty test data
+test_X = np.random.rand(100)
+test_y = test_X
 
-headers = {
-    "Content-type": "application/json",
-    "Authorization": "Token " + SECRETS.API_KEY
-}
+plt.scatter(test_X, test_y)
+plt.savefig("no_trend.png")
 
-startDate = "2020-10-23"
-endDate = "2020-10-30"
+r = LinearRegression.SimpleRegressor()
+# r.fit(dates_epoch.to_numpy(), opening_prices.to_numpy(), 30)
+r.fit(test_X, test_y, 30)
+predict_X = np.array([0, 1])
+predict_y = r.predict_points(predict_X)
+plt.plot(predict_X, predict_y)
 
-response = requests.get("""https://api.tiingo.com/tiingo/crypto/prices?tickers=btcusd&startDate=""" + startDate + """&endDate=""" + endDate + """&resampleFreq=4hour""",
-                        headers=headers)
+plt.savefig("trend.png")
 
-r = response.json()
-price_data = r[0]["priceData"]
-price_data = pd.DataFrame(price_data)
-print(price_data.head())
+print("m: " + str(r.m))
+print("c: " + str(r.c))
